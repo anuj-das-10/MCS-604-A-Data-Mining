@@ -1,4 +1,4 @@
-def pretty_print(data_cube: list, x_axis: int, y_axis: int, z_axis: int, field_width = 5) -> None:
+def pretty_print(data_cube, x_axis, y_axis, z_axis, field_width = 5):
     # Iterate over the X axis (layers)
     for i in range(x_axis):
         print(f"----------- Layer-X[{i}] -------------")        
@@ -26,7 +26,6 @@ def sliced_view(sliced_array, caption, rowdata_alignment = "left", field_width =
             row_data = "  ".join(f"{item:<{field_width}}" for item in sliced_array[i])
             print(row_data)
     print("-" * (field_width * Y + X))
-
 
 
 def slice_by_gender(data_cube, gender):
@@ -60,7 +59,7 @@ data_cube = [
 
 pretty_print(data_cube, X, Y, Z)
 
-parameter = input("Enter gender to slice:  ")
+parameter = input("Enter gender to slice:  ").lower()
 
 match parameter:
     case "male": 
