@@ -1,0 +1,8 @@
+milk,bread,cheese
+mile,bread
+bread,cheese,juice
+milk,juice
+bread,milk,juice
+milk,butter,bread,beans
+milk,jam,butter
+banana,bread,milk,butter

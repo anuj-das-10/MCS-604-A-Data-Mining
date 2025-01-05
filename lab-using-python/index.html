@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>code<br>from itertools import combinations<br>from collections import defaultdict<br><br>def
+    read_transactions(file_path):<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; Reads transactions from a
+    file.<br>&nbsp;&nbsp;&nbsp; Each line in the file represents a transaction, with items separated by
+    commas.<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; transactions = []<br>&nbsp;&nbsp;&nbsp; with open(file_path,
+    'r') as file:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for line in
+    file:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; transaction = <a
+        href="http://line.strip">line.strip</a>().split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="http://transactions.append">transactions.append</a>(set(transaction))<br>&nbsp;&nbsp;&nbsp; return
+    transactions<br><br>def get_itemsets(transactions, length):<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; Generate
+    candidate itemsets of a given length.<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; items = set(item for
+    transaction in transactions for item in transaction)<br>&nbsp;&nbsp;&nbsp; return set(combinations(items,
+    length))<br><br>def calculate_support(transactions, itemsets):<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp;
+    Calculate the support count for each itemset.<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; support_count =
+    defaultdict(int)<br>&nbsp;&nbsp;&nbsp; for transaction in
+    transactions:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for itemset in
+    itemsets:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+    set(itemset).issubset(transaction):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    support_count[itemset] += 1<br>&nbsp;&nbsp;&nbsp; return support_count<br><br>def apriori(transactions,
+    min_support):<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; Implements the Apriori algorithm to find frequent
+    itemsets.<br>&nbsp;&nbsp;&nbsp; """<br>&nbsp;&nbsp;&nbsp; length = 1<br>&nbsp;&nbsp;&nbsp; frequent_itemsets =
+    []<br>&nbsp;&nbsp;&nbsp; candidate_itemsets = get_itemsets(transactions, length)<br>&nbsp;&nbsp;&nbsp;
+    <br>&nbsp;&nbsp;&nbsp; while candidate_itemsets:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print(f"\n---
+    Generating itemsets of length {length} ---")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Calculate support for current
+    candidates<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; support_count = calculate_support(transactions,
+    candidate_itemsets)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+    Filter itemsets based on minimum support<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; current_frequent = {itemset:
+    count for itemset, count in <a href="http://support_count.items">support_count.items</a>() if count &gt;=
+    min_support}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if not
+    current_frequent:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Add frequent
+    itemsets to the result<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+        href="http://frequent_itemsets.extend">frequent_itemsets.extend</a>(<a
+        href="http://current_frequent.keys">current_frequent.keys</a>())<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print(f"Frequent Itemsets (Length
+    {length}):")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for itemset, count in <a
+        href="http://current_frequent.items">current_frequent.items</a>():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    print(f"{itemset} -&gt; Support: {count}")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Generate candidates for the next
+    length<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; candidate_itemsets =
+    set(combinations(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set(item for itemset in <a
+        href="http://current_frequent.keys">current_frequent.keys</a>() for item in itemset), length +
+    1))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; length += 1<br><br>&nbsp;&nbsp;&nbsp; return
+    frequent_itemsets<br><br>if __name__ == "__main__":<br>&nbsp;&nbsp;&nbsp; # Path to the transactions
+    file<br>&nbsp;&nbsp;&nbsp; file_path = "<a
+        href="http://transactions.txt">transactions.txt</a>"<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; # Minimum
+    support threshold<br>&nbsp;&nbsp;&nbsp; min_support = 2<br><br>&nbsp;&nbsp;&nbsp; # Read transactions from the
+    file<br>&nbsp;&nbsp;&nbsp; transactions = read_transactions(file_path)<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;
+    # Perform Apriori Algorithm<br>&nbsp;&nbsp;&nbsp; print("=== Apriori Algorithm ===")<br>&nbsp;&nbsp;&nbsp;
+    frequent_itemsets = apriori(transactions, min_support)<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; # Output
+    results<br>&nbsp;&nbsp;&nbsp; print("\n=== Results ===")<br>&nbsp;&nbsp;&nbsp; print("Frequent
+    Itemsets:")<br>&nbsp;&nbsp;&nbsp; for itemset in frequent_itemsets:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    print(itemset)</body>
+
+</html>
